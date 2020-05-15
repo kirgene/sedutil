@@ -34,6 +34,7 @@ sedutiloutput outputFormat = sedutilNormal;
 int main(int argc, char** argv) {
     
     CLog::Level() = CLog::FromInt(0);
+    RCLog::Level() = CLog::FromInt(0);
     LOG(D4) << "Legacy PBA start" << endl;
 //    system ("tput clear");
     printf("DTA LINUX Pre Boot Authorization \n");
