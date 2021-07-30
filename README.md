@@ -40,7 +40,13 @@
 	```
 
 ## Useful commands
-  
+
+* Update PBA image:
+	```bash
+	create-initrd.sh
+	create-pba-image.sh
+	sedutil-cli --loadPBAimage <password> pba.disk <drive>
+	```
 * Accessing the drive from a live distro:
 	```bash
 	sedutil-cli --setlockingrange 0 rw password drive  

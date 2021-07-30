@@ -1,11 +1,13 @@
 #!/bin/bash
 
+set -e
+
 if [ "$(whoami)" != "root" ]; then
         echo "Sorry, you are not root."
         exit 1
 fi
 
-dd if=/dev/zero of=pba.disk bs=1M count=36
+dd if=/dev/zero of=pba.disk bs=1M count=36 status=none
 sfdisk pba.disk -q -X gpt <<< ",,U"
 
 kpartx -a pba.disk
@@ -14,7 +16,7 @@ mkfs.vfat ${PBA}
 PBA_DIR=$(mktemp -d)
 mount ${PBA} $PBA_DIR
 
-KERNEL=$(find /boot/ -type f -name 'vmlinuz*' | sort -r | head -1)
+KERNEL="/boot/$(readlink /boot/vmlinuz)"
 cp initramfs.cpio.gz $PBA_DIR
 cp $KERNEL $PBA_DIR
 

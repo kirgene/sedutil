@@ -1,9 +1,17 @@
 #!/bin/sh
 
+set -e
+
 INITRAMFS_DIR=$(mktemp -d)
-mkdir $INITRAMFS_DIR/bin
-cp $(which busybox) $INITRAMFS_DIR/bin
+mkdir -p $INITRAMFS_DIR/bin $INITRAMFS_DIR/usr/bin
+cp $(which busybox) $INITRAMFS_DIR/usr/bin
 busybox --install -s $INITRAMFS_DIR/bin
+
+if [ "$(readlink $INITRAMFS_DIR/bin/busybox)" != "/usr/bin/busybox" ]; then
+	echo "please copy busybox binary to $(readlink $INITRAMFS_DIR/bin/busybox)"
+	exit 1
+fi
+
 cat > $INITRAMFS_DIR/init <<EOF
 #!/bin/sh
 
@@ -15,7 +23,7 @@ mount -t devtmpfs none /dev
 # Load kernel modules
 for m in \$(cat /lib/modules.list); do insmod /lib/modules/\$m; done
 
-/bin/linuxpba
+linuxpba
 EOF
 chmod +x $INITRAMFS_DIR/init
 
@@ -35,7 +43,8 @@ MODULES="\
 drivers/ata/libahci.ko \
 drivers/ata/ahci.ko \
 "
-KERNEL_VERSION=$(uname -r)
+# KERNEL_VERSION=$(uname -r)
+KERNEL_VERSION=$(file -bL /boot/vmlinuz | grep -o 'version [^ ]*' | cut -d ' ' -f 2)
 mkdir -p $INITRAMFS_DIR/lib/modules
 for m in $MODULES; do
 	dst=$INITRAMFS_DIR/lib/modules/$(dirname $m)

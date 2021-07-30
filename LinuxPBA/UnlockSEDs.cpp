@@ -73,7 +73,6 @@ uint8_t UnlockSEDs(char * password) {
         else
             d = new DtaDevOpal1(devref);
         delete tempDev;
-        d->no_hash_passwords = false;
         failed = 0;
         if (d->Locked()) {
             if (d->MBREnabled()) {
