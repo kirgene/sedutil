@@ -35,7 +35,7 @@ MODULES="\
 drivers/ata/libahci.ko \
 drivers/ata/ahci.ko \
 "
-KERNEL_VERSION=$(ls /lib/modules | sort -r | head -1)
+KERNEL_VERSION=$(uname -r)
 mkdir -p $INITRAMFS_DIR/lib/modules
 for m in $MODULES; do
 	dst=$INITRAMFS_DIR/lib/modules/$(dirname $m)
