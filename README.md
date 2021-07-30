@@ -5,12 +5,9 @@
 	autoreconf -i
 	./configure
 	make -j4
+	make install
 	```
-2. Add current dir to `$PATH`:
-	```bash
-	export PATH=$PATH:$(pwd)
-	```
-3. Check OPAL support for your drive:
+2. Check OPAL support for your drive:
 	```
 	sedutil-cli --scan
 	Scanning for Opal compliant disks
@@ -23,20 +20,43 @@
 	```
 	Verify that your drive has a 2 in the second column indicating OPAL 2 support. If it doesn't  **do not proceed**, there is something that is preventing sedutil from supporting your drive. If you continue you may  **erase all of your data**  
 	
-4. Create pre-boot authorization (PBA) image:
+3. Create pre-boot authorization (PBA) image:
 	```bash
 	create-initrd.sh
 	create-pba-image.sh
 	```
-5. Set up the drive:
+4. Set up the drive:
 	```bash
 	sedutil-cli --initialsetup <password> <drive>
 	sedutil-cli --loadPBAimage <password> pba.disk <drive>
 	sedutil-cli --setMBREnable on <password> <drive>
 	```
-6. Enable locking:
+5. Enable locking:
 	```bash
 	sedutil-cli --enableLockingRange 0 <password> <drive>
+	```
+6. Enable automatic drive unlock in suspend mode:
+
+	Get password hash
+	```bash
+	sedutil-cli --printPasswordHash <password> <device>
+	```
+
+	Write the following text (for a single device) to `/etc/systemd/system/sedutil.service`
+	(replace `<HASHED_PASSWORD>` and `<device>`)
+
+	```ini
+	[Unit]
+	Description=Sedutil
+
+	[Service]
+	Type=oneshot
+	ExecStart=-+/usr/local/sbin/sedutil-cli -n -x --prepareForS3Sleep 0 <HASHED_PASSWORD> <device>
+
+	RemainAfterExit=true
+
+	[Install]
+	WantedBy=multi-user.target
 	```
 
 ## Useful commands
