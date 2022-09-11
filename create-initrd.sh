@@ -47,6 +47,8 @@ done
 
 # Copy necessary kernel modules
 MODULES="\
+drivers/usb/host/xhci-pci-renesas.ko \
+drivers/usb/host/xhci-pci.ko \
 drivers/ata/libahci.ko \
 drivers/ata/ahci.ko \
 drivers/hid/hid.ko \
