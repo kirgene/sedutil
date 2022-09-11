@@ -47,8 +47,6 @@ done
 
 # Copy necessary kernel modules
 MODULES="\
-drivers/nvme/host/nvme.ko \
-drivers/nvme/host/nvme-core.ko \
 drivers/usb/host/xhci-pci-renesas.ko \
 drivers/usb/host/xhci-pci.ko \
 drivers/ata/libahci.ko \
@@ -56,6 +54,8 @@ drivers/ata/ahci.ko \
 drivers/hid/hid.ko \
 drivers/hid/hid-generic.ko \
 drivers/hid/usbhid/usbhid.ko \
+drivers/nvme/host/nvme-core.ko \
+drivers/nvme/host/nvme.ko \
 "
 # KERNEL_VERSION=$(uname -r)
 KERNEL_VERSION=$(file -bL /boot/vmlinuz | grep -o 'version [^ ]*' | cut -d ' ' -f 2)
