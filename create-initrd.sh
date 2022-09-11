@@ -1,6 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
-set -e
+set -euo pipefail functrace
+
+failure() {
+  local lineno=$1
+  local msg=$2
+  echo "Failed at $lineno: $msg"
+}
+trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
 
 INITRAMFS_DIR=$(mktemp -d)
 mkdir -p $INITRAMFS_DIR/bin $INITRAMFS_DIR/usr/bin
@@ -42,6 +49,9 @@ done
 MODULES="\
 drivers/ata/libahci.ko \
 drivers/ata/ahci.ko \
+drivers/hid/hid.ko \
+drivers/hid/hid-generic.ko \
+drivers/hid/usbhid/usbhid.ko \
 "
 # KERNEL_VERSION=$(uname -r)
 KERNEL_VERSION=$(file -bL /boot/vmlinuz | grep -o 'version [^ ]*' | cut -d ' ' -f 2)

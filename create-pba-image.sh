@@ -1,11 +1,18 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail functrace
 
 if [ "$(whoami)" != "root" ]; then
         echo "Sorry, you are not root."
         exit 1
 fi
+
+failure() {
+  local lineno=$1
+  local msg=$2
+  echo "Failed at $lineno: $msg"
+}
+trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
 
 dd if=/dev/zero of=pba.disk bs=1M count=36 status=none
 sfdisk pba.disk -q -X gpt <<< ",,U"
