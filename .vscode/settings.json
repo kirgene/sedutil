@@ -1,5 +1,5 @@
 {
-    "editor.fontSize": 18,
-    "editor.cursorStyle": "block",
+    "editor.fontSize": 14,
+    "editor.cursorStyle": "line",
     "editor.accessibilityPageSize": 18
 }

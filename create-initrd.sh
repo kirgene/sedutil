@@ -47,6 +47,8 @@ done
 
 # Copy necessary kernel modules
 MODULES="\
+drivers/nvme/host/nvme.ko \
+drivers/nvme/host/nvme-core.ko \
 drivers/usb/host/xhci-pci-renesas.ko \
 drivers/usb/host/xhci-pci.ko \
 drivers/ata/libahci.ko \
