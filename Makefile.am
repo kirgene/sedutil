@@ -26,6 +26,7 @@ SEDUTIL_COMMON_CODE = Common/log.h \
 	Common/pbkdf2/handy.h Common/pbkdf2/tassert.h
 SEDUTIL_LINUX_CODE = \
 	linux/Version.h linux/os.h linux/DtaDevLinuxDrive.h \
+	linux/DtaDevLinuxDrive.cpp \
 	linux/DtaDevLinuxNvme.cpp linux/DtaDevLinuxSata.cpp \
 	linux/DtaDevLinuxNvme.h linux/DtaDevLinuxSata.h \
 	linux/DtaDevOS.cpp linux/DtaDevOS.h
