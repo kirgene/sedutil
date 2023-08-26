@@ -2,6 +2,11 @@
 
 set -euo pipefail functrace
 
+if [ "$(whoami)" != "root" ]; then
+        echo "Sorry, you are not root."
+        exit 1
+fi
+
 failure() {
   local lineno=$1
   local msg=$2
