@@ -7,6 +7,8 @@ if [ "$(whoami)" != "root" ]; then
         exit 1
 fi
 
+which kpartx > /dev/null
+
 failure() {
   local lineno=$1
   local msg=$2
